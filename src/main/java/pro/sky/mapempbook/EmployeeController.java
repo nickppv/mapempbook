@@ -24,21 +24,27 @@ public class EmployeeController {
 
     @GetMapping(path = "/add")
     public Employee addEmployer(@RequestParam(value = "firstName", required = false) String firstName,
-                                @RequestParam(value = "lastName", required = false) String lastName) {
-        return employeeServiceImpl.addEmployer(firstName, lastName);
+                                @RequestParam(value = "lastName", required = false) String lastName,
+                                @RequestParam(value = "department", required = false) int department,
+                                @RequestParam(value = "salary", required = false) int salary) {
+        return employeeServiceImpl.addEmployer(firstName, lastName, department, salary);
     }
 
     @GetMapping(path = "/remove")
     public Employee removeEmployer(@RequestParam(value = "firstName", required = false) String firstName,
-                                   @RequestParam(value = "lastName", required = false) String lastName) {
-        return employeeServiceImpl.removeEmployer(firstName, lastName);
+                                   @RequestParam(value = "lastName", required = false) String lastName,
+                                   @RequestParam(value = "department", required = false) int department,
+                                   @RequestParam(value = "salary", required = false) int salary) {
+        return employeeServiceImpl.removeEmployer(firstName, lastName, department, salary);
 
     }
 
     @GetMapping(path = "/find")
     public Employee findEmployer(@RequestParam(value = "firstName", required = false) String firstName,
-                                 @RequestParam(value = "lastName", required = false) String lastName) {
-        return employeeServiceImpl.findEmployer(firstName, lastName);
+                                 @RequestParam(value = "lastName", required = false) String lastName,
+                                 @RequestParam(value = "department", required = false) int department,
+                                 @RequestParam(value = "salary", required = false) int salary) {
+        return employeeServiceImpl.findEmployer(firstName, lastName, department, salary);
 
     }
 }
