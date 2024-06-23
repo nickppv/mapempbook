@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 import pro.sky.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.exceptions.EmployeeNotFoundException;
 import pro.sky.exceptions.EmployeeStorageIsFullException;
+import pro.sky.exceptions.ExtraLettersException;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class EmployeeServiceImpl implements IEmployeeService {
@@ -36,7 +39,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     // метод для добавления сотрудника
     public Employee addEmployer(String firstName, String lastName, int department, int salary) throws EmployeeStorageIsFullException, EmployeeAlreadyAddedException {
-        Employee emp = new Employee(firstName, lastName, department, salary);
+        if (StringUtils.containsAny(firstName, "1234567890/*&%?()№@-+=!'\"_,.:;") ||
+                StringUtils.containsAny(lastName, "1234567890/*&%?()№@-+=!'\"_,.:;")) {
+            throw new ExtraLettersException("Введены запрещенные символы");
+        }
+        Employee emp = new Employee(firstName.substring(0, 1).toUpperCase() + firstName.substring(1),
+                lastName.substring(0, 1).toUpperCase() + lastName.substring(1),
+                department,
+                salary);
         if (mapEmp.containsKey(emp.getFullName())) {
             throw new EmployeeAlreadyAddedException("Такой работник уже есть в нашем хозяйстве.");
         } else if (mapEmp.size() >= MAX_EMPLOYEE_COUNT) {
@@ -50,6 +60,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     // метод для удаления сотрудника
     public Employee removeEmployer(String firstName, String lastName, int department, int salary) {
+        if (StringUtils.containsAny(firstName, "1234567890/*&%?()№@-+=!'\"_,.:;") ||
+                StringUtils.containsAny(lastName, "1234567890/*&%?()№@-+=!'\"_,.:;")) {
+            throw new ExtraLettersException("Введены запрещенные символы");
+        }
         Employee emp = new Employee(firstName, lastName, department, salary);
         if (mapEmp.containsKey(emp.getFullName())) {
             mapEmp.remove(emp.getFullName());
@@ -61,6 +75,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     // метод для получения сотрудника
     public Employee findEmployer(String firstName, String lastName, int department, int salary) {
+        if (StringUtils.containsAny(firstName, "1234567890/*&%?()№@-+=!'\"_,.:;") ||
+                StringUtils.containsAny(lastName, "1234567890/*&%?()№@-+=!'\"_,.:;")) {
+            throw new ExtraLettersException("Введены запрещенные символы");
+        }
         Employee emp = new Employee(firstName, lastName, department, salary);
         if (mapEmp.containsKey(emp.getFullName())) {
             return emp;
